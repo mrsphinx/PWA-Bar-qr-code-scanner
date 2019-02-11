@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>My Website</title>
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="assets/lib/material-design-lite/material.min.css">
+    <script src="assets/lib/material-design-lite/material.min.js"></script>
+    <script type="text/javascript">
+        // if ('serviceWorker' in navigator) {
+        //     navigator.serviceWorker.register('sw1.js')
+        //         .then(function(registration) {
+        //             console.log('Registration successful, scope is:', registration.scope);
+        //         })
+        //         .catch(function(error) {
+        //             console.log('Service worker registration failed, error:', error);
+        //         });
+        // }
+        if (typeof console != "undefined")
+            if (typeof console.log != 'undefined')
+                console.olog = console.log;
+            else
+                console.olog = function() {};
+
+        console.log = function(message) {
+            console.olog(message);
+            let el = document.createElement('p');
+            el.append(message);
+            document.querySelector('#debugDiv').append(el);
+        };
+        console.error = console.debug = console.info = console.log
+
+        function deser(obj) {
+            for (const key in obj) {
+                let value = obj[key];
+
+                //optional check for properties from prototype chain
+                if (obj.hasOwnProperty(key)) {
+                    console.log(key + ':' + value)
+                } else {
+                    //property from protytpe chain
+                }
+            }
+            Object.keys(obj).map(e => {
+                console.log(e + ":" + obj[e])
+            })
+
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="assets/app.js"></script>
+</head>
+
+<body>
+    <div id='debugDiv'>
+        <p>Debug:</p>
+    </div>
+    <div id="loading" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+
+    <video id="camera" autoplay>You need a camera in order to use this app.</video>
+    <div id="snapshotLimitOverlay">
+        <div id="about" style="display:none">
+            <h4>QR Code Scanner</h4>
+            <p>
+                This is a lightweight progressive web app for scanning QR Codes offline.<br /> You'll need at least a camera and a compatible browser.<br /> Source code is available on GitHub (Minishlink/pwa-qr-code-scanner), click the <strong>About</strong>                button.
+            </p>
+        </div>
+    </div>
+    <canvas id="snapshot"></canvas>
+    <button id="flipCamera" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Flip Camera</button>
+    <a id="aboutButton" type="button" href="https://github.com/Minishlink/pwa-qr-code-scanner" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">About</a>
+
+    <dialog class="mdl-dialog">
+        <h4 class="mdl-dialog__title">Your text</h4>
+        <div class="mdl-dialog__content">
+            <p id="resultsContainer"><span id="result"></span></p>
+            <p>
+                <button type="button" class="copy mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised" data-clipboard-target="#result">Copy</button>
+                <a class="search mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised">Search</a>
+            </p>
+        </div>
+        <div class="mdl-dialog__actions">
+            <button type="button" class="continue mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">Continue</button>
+        </div>
+    </dialog>
+</body>
+
+</html>
