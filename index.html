@@ -86,8 +86,8 @@
         <p>Debug:</p>
     </div>
     <div id="loading" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-
-    <video id="camera" autoplay>You need a camera in order to use this app.</video>
+    <div id="interactive" class="viewport"></div>
+    <!-- <video id="camera" autoplay>You need a camera in order to use this app.</video>
     <div id="snapshotLimitOverlay">
         <div id="about" style="display:none">
             <h4>QR Code Scanner</h4>
@@ -96,7 +96,7 @@
             </p>
         </div>
     </div>
-    <canvas id="snapshot"></canvas>
+    <canvas id="snapshot"></canvas> -->
     <button id="flipCamera" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Flip Camera</button>
     <a id="aboutButton" type="button" href="https://github.com/Minishlink/pwa-qr-code-scanner" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">About</a>
     <script src="assets/lib/quagga/quagga.js" type="text/javascript"></script>
@@ -167,27 +167,55 @@
                         height: {
                             min: 480
                         },
-                        facingMode: "environment",
                         aspectRatio: {
                             min: 1,
-                            max: 2
-                        }
-                    },
-                    target: document.querySelector('#camera')
+                            max: 100
+                        },
+                        facingMode: "environment" // or "user" for the front camera
+                    }
                 },
                 locator: {
                     patchSize: "medium",
                     halfSample: true
                 },
-                numOfWorkers: 2,
-                frequency: 10,
+                numOfWorkers: (navigator.hardwareConcurrency ? navigator.hardwareConcurrency : 4),
                 decoder: {
-                    readers: [{
-                        format: "code_128_reader",
-                        config: {}
+                    "readers": [{
+                        "format": "ean_reader",
+                        "config": {}
                     }]
                 },
                 locate: true
+                    // inputStream: {
+                    //     type: "LiveStream",
+                    //     constraints: {
+                    //         width: {
+                    //             min: 640
+                    //         },
+                    //         height: {
+                    //             min: 480
+                    //         },
+                    //         facingMode: "environment",
+                    //         aspectRatio: {
+                    //             min: 1,
+                    //             max: 2
+                    //         }
+                    //     },
+                    //     target: document.querySelector('#camera')
+                    // },
+                    // locator: {
+                    //     patchSize: "medium",
+                    //     halfSample: true
+                    // },
+                    // numOfWorkers: 2,
+                    // frequency: 10,
+                    // decoder: {
+                    //     readers: [{
+                    //         format: "code_128_reader",
+                    //         config: {}
+                    //     }]
+                    // },
+                    // locate: true
             },
             lastResult: null
         }
