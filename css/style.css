@@ -90,5 +90,6 @@ body {
     background-color: transparent;
     color: black;
     z-index: 10000;
-    overflow: scroll
+    overflow: scroll;
+    height: 300px;
 }
