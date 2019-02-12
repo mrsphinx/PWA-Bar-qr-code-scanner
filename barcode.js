@@ -71,7 +71,8 @@ var barcode = function () {
 		if (navigator.getUserMedia) {
 			navigator.getUserMedia({ audio: false, video: true }, function (stream) {
 				console.log(stream)
-				elements.video.src = window.URL.createObjectURL(stream);
+				// elements.video.src = window.URL.createObjectURL(stream);
+				elements.video.srcObject = stream;
 			}, function (error) {
 				console.log(error);
 			});
