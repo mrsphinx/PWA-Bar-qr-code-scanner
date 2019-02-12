@@ -26,6 +26,36 @@
             });
 
         });
+        if (typeof console != "undefined")
+            if (typeof console.log != 'undefined')
+                console.olog = console.log;
+            else
+                console.olog = function() {};
+
+        console.log = function(message) {
+            console.olog(message);
+            let el = document.createElement('p');
+            el.append(message);
+            document.querySelector('#debugDiv').append(el);
+        };
+        console.error = console.debug = console.info = console.log
+
+        function deser(obj) {
+            for (const key in obj) {
+                let value = obj[key];
+
+                //optional check for properties from prototype chain
+                if (obj.hasOwnProperty(key)) {
+                    console.log(key + ':' + value)
+                } else {
+                    //property from protytpe chain
+                }
+            }
+            Object.keys(obj).map(e => {
+                console.log(e + ":" + obj[e])
+            })
+
+        }
     </script>
     <style>
         #flipCamera,
