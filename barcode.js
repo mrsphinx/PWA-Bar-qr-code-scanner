@@ -69,14 +69,14 @@ var barcode = function () {
 		elements.ctxg = elements.canvasg.getContext('2d');
 		console.log(elements)
 		if (navigator.getUserMedia) {
-			let config = {
+			let configUserMedia = {
 				audio: false,
 				video: {}
 			};
-			checkCamera();
-			config.video = currentDeviceId ? { deviceId: currentDeviceId } : { facingMode: "environment" };
+			// checkCamera();
+			configUserMedia.video = currentDeviceId ? { deviceId: currentDeviceId } : { facingMode: "environment" };
 			stopStream();
-			navigator.getUserMedia(config).then(function (stream) {
+			navigator.getUserMedia(configUserMedia).then(function (stream) {
 				console.log(stream)
 				// elements.video.src = window.URL.createObjectURL(stream);
 				elements.video.srcObject = stream;
@@ -121,6 +121,7 @@ var barcode = function () {
 		console.log('end init')
 	}
 	function checkCamera() {
+		console.log('check camera')
 		navigator.mediaDevices.enumerateDevices()
 			.then(function (devices) {
 				devices = devices.filter(function (device) {
