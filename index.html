@@ -191,16 +191,7 @@
                 },
                 numOfWorkers: (navigator.hardwareConcurrency ? navigator.hardwareConcurrency : 4),
                 decoder: {
-                    readers: [{
-                        format: "ean_reader",
-                        config: {}
-                    }, {
-                        format: "code_128_reader",
-                        config: {}
-                    }, {
-                        format: "code_39_reader",
-                        config: {}
-                    }]
+                    readers: ["ean_reader", "code_128_reader", "code_39_reader"]
                 },
                 locate: true
                     // inputStream: {
