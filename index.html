@@ -78,6 +78,12 @@
             left: 0;
             top: 0;
         }
+        
+        .inView {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 
@@ -86,7 +92,9 @@
         <p>Debug:</p>
     </div>
     <div id="loading" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-    <div id="interactive" class="viewport"></div>
+    <div class="inView">
+        <div id="interactive" class="viewport"></div>
+    </div>
     <!-- <video id="camera" autoplay>You need a camera in order to use this app.</video>
     <div id="snapshotLimitOverlay">
         <div id="about" style="display:none">
