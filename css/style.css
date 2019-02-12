@@ -59,7 +59,8 @@ body {
 }
 
 #flipCamera,
-#aboutButton {
+#aboutButton,
+#debugDiv {
     position: absolute;
     background-color: #eee;
 }
@@ -70,7 +71,8 @@ body {
     right: 5vmin;
 }
 
-#aboutButton {
+#aboutButton,
+#debugDiv {
     bottom: 5vmin;
     left: 5vmin;
 }
@@ -82,4 +84,10 @@ body {
 
 #about h4 {
     margin-top: 0;
+}
+
+#debugDiv {
+    background-color: transparent;
+    color: black;
+    z-index: 10000;
 }
