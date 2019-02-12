@@ -76,7 +76,7 @@ var barcode = function () {
 			// checkCamera();
 			configUserMedia.video = currentDeviceId ? { deviceId: currentDeviceId } : { facingMode: "environment" };
 			stopStream();
-			navigator.getUserMedia(configUserMedia).then(function (stream) {
+			navigator.mediaDevices.getUserMedia(configUserMedia).then(function (stream) {
 				console.log(stream)
 				// elements.video.src = window.URL.createObjectURL(stream);
 				elements.video.srcObject = stream;
