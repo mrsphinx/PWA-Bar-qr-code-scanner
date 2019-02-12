@@ -187,9 +187,23 @@
                 },
                 locator: {
                     patchSize: "medium",
-                    halfSample: true
+                    halfSample: true,
+                    debug: {
+                        showCanvas: true,
+                        showPatches: true,
+                        showFoundPatches: true,
+                        showSkeleton: true,
+                        showLabels: true,
+                        showPatchLabels: true,
+                        showRemainingPatchLabels: true,
+                        boxFromPatches: {
+                            showTransformed: true,
+                            showTransformedBox: true,
+                            showBB: true
+                        }
+                    }
                 },
-                numOfWorkers: (navigator.hardwareConcurrency ? navigator.hardwareConcurrency : 4),
+                numOfWorkers: 4,
                 decoder: {
                     readers: ["ean_reader", "code_128_reader", "code_39_reader"]
                 },
