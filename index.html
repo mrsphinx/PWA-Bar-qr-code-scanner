@@ -170,6 +170,13 @@
             lastResult: null
         }
         App.init();
+        Quagga.onProcessed(function(result) {
+            console.log("Result:" + result)
+        });
+        Quagga.onDetected(function(result) {
+            var code = result.codeResult.code;
+            console.log(code)
+        })
     </script>
 </body>
 
