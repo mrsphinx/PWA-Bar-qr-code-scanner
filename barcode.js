@@ -3,7 +3,7 @@ var barcode = function () {
 	var localMediaStream = null;
 	var bars = [];
 	var handler = null;
-
+	var currentDeviceId;
 	var dimensions = {
 		height: 0,
 		width: 0,
@@ -69,7 +69,14 @@ var barcode = function () {
 		elements.ctxg = elements.canvasg.getContext('2d');
 		console.log(elements)
 		if (navigator.getUserMedia) {
-			navigator.getUserMedia({ audio: false, video: true }, function (stream) {
+			let config = {
+				audio: false,
+				video: {}
+			};
+			checkCamera();
+			config.video = currentDeviceId ? { deviceId: currentDeviceId } : { facingMode: "environment" };
+			stopStream();
+			navigator.getUserMedia(config).then(function (stream) {
 				console.log(stream)
 				// elements.video.src = window.URL.createObjectURL(stream);
 				elements.video.srcObject = stream;
@@ -113,10 +120,30 @@ var barcode = function () {
 		// }, false);
 		console.log('end init')
 	}
+	function checkCamera() {
+		navigator.mediaDevices.enumerateDevices()
+			.then(function (devices) {
+				devices = devices.filter(function (device) {
+					return device.kind === 'videoinput';
+				});
+
+				if (devices.length > 1) {
+
+					currentDeviceId = devices[0].deviceId; // no way to know current MediaStream's device id so arbitrarily choose the first
+				}
+			});
+	}
 
 	function snapshot() {
 		elements.ctx.drawImage(elements.video, 0, 0, dimensions.width, dimensions.height);
 		processImage();
+	}
+
+	function stopStream() {
+		console.log('stop stream')
+		if (video.srcObject) {
+			video.srcObject.getTracks()[0].stop();
+		}
 	}
 
 	function processImage() {
