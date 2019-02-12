@@ -107,6 +107,35 @@
                 return true;
             }
         });
+        var App = {
+            init: function() {
+                var self = this;
+
+                Quagga.init(this.state, function(err) {
+                    if (err) {
+                        return self.handleError(err);
+                    }
+                    //Quagga.registerResultCollector(resultCollector);
+                    App.attachListeners();
+                    App.checkCapabilities();
+                    Quagga.start();
+                });
+            },
+            handleError: function(e) {
+                console.log(e)
+            },
+            attachListeners: function() {
+                var self = this;
+                self.initCameraSelection();
+            },
+            checkCapabilities: function() {
+
+            },
+            initCameraSelection: function() {
+                var streamLabel = Quagga.CameraAccess.getActiveStreamLabel();
+                console.log(streamLabel)
+            }
+        }
     </script>
 </body>
 
