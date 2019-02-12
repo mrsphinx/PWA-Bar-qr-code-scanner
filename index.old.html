@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>My Website</title>
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="assets/lib/material-design-lite/material.min.css">
+    <script src="assets/lib/material-design-lite/material.min.js"></script>
+    <script type="text/javascript">
+        // if ('serviceWorker' in navigator) {
+        //     navigator.serviceWorker.register('sw1.js')
+        //         .then(function(registration) {
+        //             console.log('Registration successful, scope is:', registration.scope);
+        //         })
+        //         .catch(function(error) {
+        //             console.log('Service worker registration failed, error:', error);
+        //         });
+        // }
+        if (typeof console != "undefined")
+            if (typeof console.log != 'undefined')
+                console.olog = console.log;
+            else
+                console.olog = function() {};
+
+        console.log = function(message) {
+            console.olog(message);
+            let el = document.createElement('p');
+            el.append(message);
+            document.querySelector('#debugDiv').append(el);
+        };
+        console.error = console.debug = console.info = console.log
+
+        function deser(obj) {
+            for (const key in obj) {
+                let value = obj[key];
+
+                //optional check for properties from prototype chain
+                if (obj.hasOwnProperty(key)) {
+                    console.log(key + ':' + value)
+                } else {
+                    //property from protytpe chain
+                }
+            }
+            Object.keys(obj).map(e => {
+                console.log(e + ":" + obj[e])
+            })
+
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="assets/app.js"></script>
+    <style>
+        #interactive.viewport {
+            position: relative;
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        #interactive.viewport>canvas,
+        #interactive.viewport>video {
+            max-width: 100%;
+            width: 100%;
+        }
+        
+        canvas.drawing,
+        canvas.drawingBuffer {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .inView {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loading" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+    <!-- <div class="inView"> -->
+    <div id="interactive" class="viewport"></div>
+    <!-- </div> -->
+    <div id='debugDiv'>
+        <p>Debug:</p>
+    </div>
+    <!-- <video id="camera" autoplay>You need a camera in order to use this app.</video>
+    <div id="snapshotLimitOverlay">
+        <div id="about" style="display:none">
+            <h4>QR Code Scanner</h4>
+            <p>
+                This is a lightweight progressive web app for scanning QR Codes offline.<br /> You'll need at least a camera and a compatible browser.<br /> Source code is available on GitHub (Minishlink/pwa-qr-code-scanner), click the <strong>About</strong>                button.
+            </p>
+        </div>
+    </div>
+    <canvas id="snapshot"></canvas> -->
+    <button id="flipCamera" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Flip Camera</button>
+    <!-- <a id="aboutButton" type="button" href="https://github.com/Minishlink/pwa-qr-code-scanner" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">About</a> -->
+    <script src="assets/lib/quagga/quagga.js" type="text/javascript"></script>
+    <script>
+        var resultCollector = Quagga.ResultCollector.create({
+            capture: true,
+            capacity: 20,
+            blacklist: [{
+                code: "WIWV8ETQZ1",
+                format: "code_93"
+            }, {
+                code: "EH3C-%GU23RK3",
+                format: "code_93"
+            }, {
+                code: "O308SIHQOXN5SA/PJ",
+                format: "code_93"
+            }, {
+                code: "DG7Q$TV8JQ/EN",
+                format: "code_93"
+            }, {
+                code: "VOFD1DB5A.1F6QU",
+                format: "code_93"
+            }, {
+                code: "4SO64P4X8 U4YUU1T-",
+                format: "code_93"
+            }],
+            filter: function(codeResult) {
+                // only store results which match this constraint
+                // e.g.: codeResult
+                return true;
+            }
+        });
+        var App = {
+            init: function() {
+                var self = this;
+
+                Quagga.init(this.state, function(err) {
+                    if (err) {
+                        return self.handleError(err);
+                    }
+                    //Quagga.registerResultCollector(resultCollector);
+                    App.attachListeners();
+                    App.checkCapabilities();
+                    Quagga.start();
+                });
+            },
+            handleError: function(e) {
+                console.log(e)
+            },
+            attachListeners: function() {
+                var self = this;
+                self.initCameraSelection();
+            },
+            checkCapabilities: function() {
+
+            },
+            initCameraSelection: function() {
+                var streamLabel = Quagga.CameraAccess.getActiveStreamLabel();
+                console.log(streamLabel)
+            },
+            state: {
+                inputStream: {
+                    type: "LiveStream",
+                    constraints: {
+                        width: {
+                            min: 640
+                        },
+                        height: {
+                            min: 480
+                        },
+                        aspectRatio: {
+                            min: 1,
+                            max: 100
+                        },
+                        facingMode: "environment" // or "user" for the front camera
+                    },
+                    singleChannel: true
+
+                },
+                locator: {
+                    patchSize: "medium",
+                    halfSample: true,
+                },
+                numOfWorkers: 4,
+                decoder: {
+                    readers: ["ean_reader", "code_128_reader", "code_39_reader"]
+                },
+                locate: true,
+                frequency: 10
+                    // inputStream: {
+                    //     type: "LiveStream",
+                    //     constraints: {
+                    //         width: {
+                    //             min: 640
+                    //         },
+                    //         height: {
+                    //             min: 480
+                    //         },
+                    //         facingMode: "environment",
+                    //         aspectRatio: {
+                    //             min: 1,
+                    //             max: 2
+                    //         }
+                    //     },
+                    //     target: document.querySelector('#camera')
+                    // },
+                    // locator: {
+                    //     patchSize: "medium",
+                    //     halfSample: true
+                    // },
+                    // numOfWorkers: 2,
+                    // frequency: 10,
+                    // decoder: {
+                    //     readers: [{
+                    //         format: "code_128_reader",
+                    //         config: {}
+                    //     }]
+                    // },
+                    // locate: true
+            },
+            lastResult: null
+        }
+        App.init();
+        Quagga.onProcessed(function(result) {
+            var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+            if (result) {
+                if (result.boxes) {
+                    drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                    result.boxes.filter(function(box) {
+                        return box !== result.box;
+                    }).forEach(function(box) {
+                        Quagga.ImageDebug.drawPath(box, {
+                            x: 0,
+                            y: 1
+                        }, drawingCtx, {
+                            color: "green",
+                            lineWidth: 2
+                        });
+                    });
+                }
+
+                if (result.box) {
+                    Quagga.ImageDebug.drawPath(result.box, {
+                        x: 0,
+                        y: 1
+                    }, drawingCtx, {
+                        color: "#00F",
+                        lineWidth: 2
+                    });
+                }
+
+                if (result.codeResult && result.codeResult.code) {
+                    Quagga.ImageDebug.drawPath(result.line, {
+                        x: 'x',
+                        y: 'y'
+                    }, drawingCtx, {
+                        color: 'red',
+                        lineWidth: 3
+                    });
+                }
+            }
+        });
+        Quagga.onDetected(function(result) {
+            var code = result.codeResult.code;
+            if (App.lastResult !== code) {
+                App.lastResult = code;
+                console.log("SCAN:" + code)
+            }
+        })
+    </script>
+</body>
+
+</html>
