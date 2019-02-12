@@ -101,23 +101,7 @@ var barcode = function () {
 			setInterval(function () { snapshot() }, config.delay);
 
 		}
-		// elements.video.addEventListener('canplay', function (e) {
 
-		// 	dimensions.height = elements.video.videoHeight;
-		// 	dimensions.width = elements.video.videoWidth;
-
-		// 	dimensions.start = dimensions.width * config.start;
-		// 	dimensions.end = dimensions.width * config.end;
-
-		// 	elements.canvas.width = dimensions.width;
-		// 	elements.canvas.height = dimensions.height;
-		// 	elements.canvasg.width = dimensions.width;
-		// 	elements.canvasg.height = dimensions.height;
-
-		// 	drawGraphics();
-		// 	setInterval(function () { snapshot() }, config.delay);
-
-		// }, false);
 		console.log('end init')
 	}
 	function checkCamera() {
