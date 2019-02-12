@@ -142,8 +142,8 @@ var barcode = function () {
 
 	function stopStream() {
 		console.log('stop stream')
-		if (video.srcObject) {
-			video.srcObject.getTracks()[0].stop();
+		if (elements.video.srcObject) {
+			elements.video.srcObject.getTracks()[0].stop();
 		}
 	}
 
