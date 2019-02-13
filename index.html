@@ -7,19 +7,19 @@
     <script type="text/javascript" src="barcode.js"></script>
 
     <script type="text/javascript">
-        if (typeof console != "undefined")
-            if (typeof console.log != 'undefined')
-                console.olog = console.log;
-            else
-                console.olog = function() {};
+        // if (typeof console != "undefined")
+        //     if (typeof console.log != 'undefined')
+        //         console.olog = console.log;
+        //     else
+        //         console.olog = function() {};
 
-        console.log = function(message) {
-            console.olog(message);
-            let el = document.createElement('p');
-            el.append(message);
-            document.querySelector('#debugDiv').append(el);
-        };
-        console.error = console.debug = console.info = console.log
+        // console.log = function(message) {
+        //     console.olog(message);
+        //     let el = document.createElement('p');
+        //     el.append(message);
+        //     document.querySelector('#debugDiv').append(el);
+        // };
+        // console.error = console.debug = console.info = console.log
 
         function deser(obj) {
             for (const key in obj) {
@@ -72,17 +72,28 @@
             z-index: 10000;
             overflow: scroll;
             height: 300px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        #graph {
+            position: relative;
+            top: 500px;
+            border: 1px solid #999;
         }
     </style>
 </head>
 
 <body>
-
-    <div id="barcode">
-        <video id="barcodevideo" autoplay></video>
-        <canvas id="barcodecanvasg"></canvas>
+    <div style="position: relative">
+        <div id="barcode">
+            <video id="barcodevideo" autoplay></video>
+            <canvas id="barcodecanvasg"></canvas>
+        </div>
     </div>
     <canvas id="barcodecanvas"></canvas>
+    <canvas id="graph" width="640" height="480"></canvas>
     <div id="result"></div>
     <div id='debugDiv'>
         <p>Debug:</p>

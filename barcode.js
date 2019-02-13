@@ -16,7 +16,10 @@ var barcode = function () {
 		canvas: null,
 		ctx: null,
 		canvasg: null,
-		ctxg: null
+		ctxg: null,
+
+		canvasGraph: null,
+		ctxGraph: null
 	}
 
 	var upc = {
@@ -51,7 +54,7 @@ var barcode = function () {
 		end: 0.9,
 		threshold: 160,
 		quality: 0.45,
-		delay: 100,
+		delay: 500,
 		video: '',
 		canvas: '',
 		canvasg: ''
@@ -67,6 +70,8 @@ var barcode = function () {
 		elements.ctx = elements.canvas.getContext('2d');
 		elements.canvasg = document.querySelector(config.canvasg);
 		elements.ctxg = elements.canvasg.getContext('2d');
+		elements.canvasGraph = document.getElementById('graph');
+		elements.ctxGraph = elements.canvasGraph.getContext('2d');
 		console.log(elements)
 		if (navigator.getUserMedia) {
 			let configUserMedia = {
@@ -142,6 +147,7 @@ var barcode = function () {
 		// convert to grayscale
 
 		var imgd = elements.ctx.getImageData(dimensions.start, dimensions.height * 0.5, dimensions.end - dimensions.start, 1);
+
 		var rgbpixels = imgd.data;
 
 		for (var i = 0, ii = rgbpixels.length; i < ii; i = i + 4) {
@@ -152,15 +158,19 @@ var barcode = function () {
 
 		var min = Math.min.apply(null, pixels);
 		var max = Math.max.apply(null, pixels);
-
+		let roundd = []
 		for (var i = 0, ii = pixels.length; i < ii; i++) {
+			// roundd.push(Math.round((pixels[i] - min) / (max - min) * 255))
 			if (Math.round((pixels[i] - min) / (max - min) * 255) > config.threshold) {
+				roundd.push(255)
+
 				binary.push(1);
 			} else {
+				roundd.push(0)
 				binary.push(0);
 			}
 		}
-
+		drawGraph(pixels, roundd)
 		// determine bar widths
 
 		var current = binary[0];
@@ -176,7 +186,6 @@ var barcode = function () {
 			}
 		}
 		pixelBars.push(count);
-
 		// quality check
 
 		if (pixelBars.length < (3 + 24 + 5 + 24 + 3 + 1)) {
@@ -214,7 +223,7 @@ var barcode = function () {
 
 		pixelBars = pixelBars.slice(startIndex, startIndex + 3 + 24 + 5 + 24 + 3);
 
-		console.log("pixelBars: " + pixelBars);
+		// console.log("pixelBars: " + pixelBars);
 
 		// calculate relative widths
 
@@ -235,7 +244,8 @@ var barcode = function () {
 		console.clear();
 
 		console.log("analyzing");
-
+		// console.log(bars)
+		// drawGraph(bars);
 		// determine parity first digit and reverse sequence if necessary
 
 		var first = normalize(bars.slice(3, 3 + 4), 7);
@@ -244,8 +254,10 @@ var barcode = function () {
 		}
 
 		// split into digits
+		// drawGraph(bars);
 
 		var digits = [
+
 			normalize(bars.slice(3, 3 + 4), 7),
 			normalize(bars.slice(7, 7 + 4), 7),
 			normalize(bars.slice(11, 11 + 4), 7),
@@ -260,8 +272,7 @@ var barcode = function () {
 			normalize(bars.slice(52, 52 + 4), 7)
 		]
 
-		console.log("digits: " + digits);
-
+		// console.log("digits: " + digits);
 		// determine parity and reverse if necessary
 
 		var parities = [];
@@ -279,6 +290,7 @@ var barcode = function () {
 
 		var result = [];
 		var quality = 0;
+		// drawGraph(digits.flat())
 
 		for (var i = 0, ii = digits.length; i < ii; i++) {
 
@@ -383,4 +395,38 @@ var barcode = function () {
 		}
 	}
 
+	function drawGraph(arr, arr1 = null) {
+		// console.log(arr)
+		elements.ctxGraph.clearRect(0, 0, 640, 480);
+		let beginPosX = 10;
+		let beginPosY = 300;
+
+		elements.ctxGraph.beginPath();
+		elements.ctxGraph.strokeStyle = 'rgb(0,0,0)'
+		elements.ctxGraph.moveTo(beginPosX, beginPosY);
+
+		for (let i = 0; i < arr.length; i++) {
+			let Y = beginPosY - (255 - arr[i]);
+			elements.ctxGraph.lineTo(beginPosX, Y)
+			beginPosX += 1;
+
+		}
+		elements.ctxGraph.stroke();
+		if (arr1 !== null) {
+			elements.ctxGraph.beginPath();
+			beginPosX = 10;
+			beginPosY = 300;
+			elements.ctxGraph.moveTo(beginPosX, beginPosY);
+			elements.ctxGraph.strokeStyle = 'rgb(230,14,14)'
+			for (let i = 0; i < arr1.length; i++) {
+				let Y = beginPosY - (255 - arr1[i]);
+				elements.ctxGraph.lineTo(beginPosX, Y)
+				beginPosX += 1;
+			}
+			elements.ctxGraph.stroke();
+		}
+		// ctx.lineWidth = 1;
+		// elements.ctxGraph.stroke();
+	}
 }();
+
