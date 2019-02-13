@@ -108,6 +108,8 @@ var barcode = function () {
 		}
 
 		console.log('end init')
+		console.log(elements.canvas.width + "px, " + elements.canvas.height + "px");
+		console.log(elements.canvasg.width + "px, " + elements.canvasg.height + "px, ");
 	}
 	function checkCamera() {
 		console.log('check camera')
