@@ -211,7 +211,7 @@ var barcode = function () {
 			}
 		}
 
-		// console.log("startIndex: " + startIndex);
+		console.log("startIndex: " + startIndex);
 
 		// return if no starting sequence found
 
