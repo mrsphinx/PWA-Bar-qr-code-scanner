@@ -211,7 +211,7 @@ var barcode = function () {
 			}
 		}
 
-		console.log("startIndex: " + startIndex);
+		// console.log("startIndex: " + startIndex);
 
 		// return if no starting sequence found
 
@@ -233,6 +233,8 @@ var barcode = function () {
 			bars.push(Math.round(pixelBars[i] / ref * 100) / 100);
 		}
 
+
+
 		// analyze pattern
 
 		analyze();
@@ -241,9 +243,9 @@ var barcode = function () {
 
 	function analyze() {
 
-		console.clear();
+		// console.clear();
 
-		console.log("analyzing");
+		// console.log("analyzing");
 		// console.log(bars)
 		// drawGraph(bars);
 		// determine parity first digit and reverse sequence if necessary
@@ -311,7 +313,7 @@ var barcode = function () {
 
 		}
 
-		console.log("result: " + result);
+		// console.log("result: " + result);
 
 		// check digit
 
@@ -319,7 +321,7 @@ var barcode = function () {
 
 		// output
 
-		console.log("quality: " + quality);
+		// console.log("quality: " + quality);
 
 		if (quality < config.quality) {
 			if (handler != null) {
